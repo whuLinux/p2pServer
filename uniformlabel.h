@@ -29,6 +29,7 @@ struct clientNode {
     QString ip;
     quint16 port;
     quint16 udpPort;
+    quint16 filePort;
 };
 
 typedef struct clientNode ClientNode;
@@ -45,6 +46,7 @@ const QString PWD = "pwd";
 const QString IP = "ip";
 const QString PORT = "port";
 const QString UDPPORT = "udpPort";
+const QString FILEPORT = "filePort";
 const QString FRIEND = "friend";
 
 #endif // UNIFORMLABEL_H

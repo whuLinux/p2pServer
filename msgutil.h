@@ -1,13 +1,15 @@
 #ifndef MSGUTIL_H
 #define MSGUTIL_H
 
+#include <QObject>
 #include <QDebug>
 
 #include "ctrlmsg.h"
 #include "uniformlabel.h"
 
-class MsgUtil
+class MsgUtil : public QObject
 {
+    Q_OBJECT
 public:
     MsgUtil();
 

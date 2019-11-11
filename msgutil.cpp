@@ -1,5 +1,10 @@
 #include "msgutil.h"
 
+MsgUtil::MsgUtil()
+{
+
+}
+
 CtrlMsg MsgUtil::createRenameMsg()
 {
     CtrlMsg renameMsg(UDPCtrlMsgType::RENAME);

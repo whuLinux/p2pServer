@@ -2,6 +2,7 @@
 #define UDPSERVERUTIL_H
 
 #include <QObject>
+#include <QTimer>
 
 #include <QUdpSocket>
 #include <QHostAddress>
@@ -25,13 +26,20 @@ private:
     QUdpSocket * server;
     quint16 port;
 
-    MsgUtil msgUtil;
+    MsgUtil * msgUtil;
+
+    QTimer * timer;
+    bool outOfDate;
 
 public:
     UDPServerUtil();
     UDPServerUtil(quint16 port);
 
     ~UDPServerUtil();
+
+    inline void setPort(quint16 port);
+
+    void initTimer();
 
     bool stablishServer();
     bool createSocket();
@@ -52,21 +60,33 @@ public:
      * @brief 接收客户端消息
      * p2pTrans wantAllPartners 出错不返回信息，留待客户端重传
      */
-    bool recfromClient();
     bool login(QHostAddress ip, quint16 udpPort, QJsonObject & jsonMsg);
     bool logout(QHostAddress ip, quint16 udpPort, QJsonObject & jsonMsg);
     bool p2pTrans(QJsonObject & jsonMsg);
     bool wantAllPartners(QHostAddress ip, quint16 udpPort);
 
+public slots:
+    bool recfromClient();
+
     /**
      * @brief 长时间没有请求，强制清除过期客户端信息
      */
-    inline void clearClient();
+    inline void updateClient();
+
 };
 
-void UDPServerUtil::clearClient()
+void UDPServerUtil::setPort(quint16 port)
 {
-    this->clientNodes.clear();
+    this->port = port;
+}
+
+void UDPServerUtil::updateClient()
+{
+    if (this->outOfDate) {
+        this->clientNodes.clear();
+    }
+
+    this->outOfDate = true;
 }
 
 #endif // UDPSERVERUTIL_H

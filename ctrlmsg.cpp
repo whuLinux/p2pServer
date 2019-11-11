@@ -29,7 +29,8 @@ QByteArray CtrlMsg::toMsg()
             QJsonObject jsonClient {
                 {PARTNERNAME, this->clients.at(i).name},
                 {IP, this->clients.at(i).ip},
-                {PORT, this->clients.at(i).port}
+                {PORT, this->clients.at(i).port},
+                {FILEPORT, this->clients.at(i).filePort}
             };
 
             jsonClients.append(jsonClient);
@@ -42,7 +43,8 @@ QByteArray CtrlMsg::toMsg()
             QJsonObject jsonClient {
                 {PARTNERNAME, this->clients.at(0).name},
                 {IP, this->clients.at(0).ip},
-                {PORT, this->clients.at(0).port}
+                {PORT, this->clients.at(0).port},
+                {FILEPORT, this->clients.at(0).filePort}
             };
 
             jsonMsg.insert(FRIEND, jsonClient);

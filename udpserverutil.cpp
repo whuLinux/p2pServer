@@ -2,18 +2,29 @@
 
 UDPServerUtil::UDPServerUtil()
 {
-
+    this->msgUtil = new MsgUtil();
+    this->outOfDate = true;
 }
 
 UDPServerUtil::UDPServerUtil(quint16 port) : port(port)
 {
-
+    this->msgUtil = new MsgUtil();
+    this->outOfDate = true;
 }
 
 UDPServerUtil::~UDPServerUtil()
 {
     delete this->server;
+    delete this->msgUtil;
+
     this->server = nullptr;
+    this->msgUtil = nullptr;
+}
+
+void UDPServerUtil::initTimer() {
+    this->timer = new QTimer();
+    connect(this->timer, SIGNAL(timeout()), this, SLOT(updateClient()));
+    timer->start(1000 * 60 * 60 * 24 * 7);
 }
 
 bool UDPServerUtil::stablishServer()
@@ -27,7 +38,9 @@ bool UDPServerUtil::stablishServer()
         return false;
     }
 
-    connect(this->server, SIGNAL(readyRead()), this, SLOT(recfromClient));
+    connect(this->server, SIGNAL(readyRead()), this, SLOT(recfromClient()));
+    initTimer();
+
     return true;
 }
 
@@ -47,42 +60,49 @@ bool UDPServerUtil::listen()
         return false;
     }
 
+    qDebug() << "UDPServerUtil::listen " << "服务器端正在监听端口 " << this->port << endl;
     return true;
 }
 
 void UDPServerUtil::rename(QHostAddress ip, quint16 udpPort)
 {
-    CtrlMsg msg = this->msgUtil.createRenameMsg();
+    CtrlMsg msg = this->msgUtil->createRenameMsg();
     this->server->writeDatagram(msg.toMsg(), ip, udpPort);
 }
 
 void UDPServerUtil::loginSuccess(QHostAddress ip, quint16 udpPort)
 {
-    CtrlMsg msg = this->msgUtil.createLoginSuccessMsg();
+    CtrlMsg msg = this->msgUtil->createLoginSuccessMsg();
     this->server->writeDatagram(msg.toMsg(), ip, udpPort);
 }
 
 void UDPServerUtil::loginFailure(QHostAddress ip, quint16 udpPort)
 {
-    CtrlMsg msg = this->msgUtil.createLoginFailureMsg();
+    CtrlMsg msg = this->msgUtil->createLoginFailureMsg();
     this->server->writeDatagram(msg.toMsg(), ip, udpPort);
 }
 
 void UDPServerUtil::logoutSuccess(QHostAddress ip, quint16 udpPort)
 {
-    CtrlMsg msg = this->msgUtil.createLogoutSuccessMsg();
+    CtrlMsg msg = this->msgUtil->createLogoutSuccessMsg();
     this->server->writeDatagram(msg.toMsg(), ip, udpPort);
 }
 
 void UDPServerUtil::logoutFailure(QHostAddress ip, quint16 udpPort)
 {
-    CtrlMsg msg = this->msgUtil.createLogoutFailureMsg();
+    CtrlMsg msg = this->msgUtil->createLogoutFailureMsg();
     this->server->writeDatagram(msg.toMsg(), ip, udpPort);
 }
 
 void UDPServerUtil::p2pNeedHole(QString name)
 {
-    CtrlMsg msg = this->msgUtil.createP2PHolePackage(this->clientNodes[name]);
+    ClientNode client;
+    client.name = name;
+    client.ip = this->clientNodes[name].ip;
+    client.port = this->clientNodes[name].port;
+    client.filePort = this->clientNodes[name].filePort;
+
+    CtrlMsg msg = this->msgUtil->createP2PHolePackage(client);
     this->server->writeDatagram(msg.toMsg(), QHostAddress(this->clientNodes[name].ip), this->clientNodes[name].udpPort);
 }
 
@@ -96,15 +116,18 @@ void UDPServerUtil::sendAllPartners(QHostAddress ip, quint16 udpPort)
         client.name = it.value().name;
         client.ip = it.value().ip;
         client.port = it.value().port;
+        client.filePort = it.value().filePort;
         clients.append(client);
     }
 
-    CtrlMsg msg = this->msgUtil.createReturnAllPartners(clients);
+    CtrlMsg msg = this->msgUtil->createReturnAllPartners(clients);
     this->server->writeDatagram(msg.toMsg(), ip, udpPort);
 }
 
 bool UDPServerUtil::recfromClient()
 {
+    this->outOfDate = false;
+
     while (this->server->hasPendingDatagrams()) {
         QByteArray datagram;
         datagram.resize(int(this->server->pendingDatagramSize()));
