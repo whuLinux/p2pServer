@@ -168,6 +168,7 @@ bool UDPServerUtil::login(QHostAddress ip, quint16 udpPort, QJsonObject & jsonMs
     QString hostName = jsonMsg.value(HOSTNAME).toString();
     QString pwd = jsonMsg.value(PWD).toString();
     quint16 port = quint16(jsonMsg.value(PORT).toInt());
+    quint16 filePort = quint16(jsonMsg.value(FILEPORT).toInt());
 
     if (this->clientNodes.contains(hostName) && this->clientNodes[hostName].pwd == pwd) {
         qDebug() << "UDPServerUtil::login " << "主机名已经注册，请修改主机名" << endl;
@@ -181,6 +182,7 @@ bool UDPServerUtil::login(QHostAddress ip, quint16 udpPort, QJsonObject & jsonMs
     this->clientNodes[hostName].pwd = pwd;
     this->clientNodes[hostName].port = port;
     this->clientNodes[hostName].udpPort = udpPort;
+    this->clientNodes[hostName].filePort = filePort;
 
     loginSuccess(ip, udpPort);
 

@@ -19,6 +19,8 @@
  */
 enum class UDPCtrlMsgType : qint8 { LOGIN, LOGOUT, RENAME, LOGINSUCCESS, LOGINFAILURE, LOGOUTSUCCESS, LOGOUTFAILURE, OBTAINALLPARTNERS, RETURNALLPARTNERS, P2PTRANS, P2PNEEDHOLE };
 
+
+
 /**
  * @brief The clientNode struct
  * 服务器记录客户端信息的结构体
@@ -33,6 +35,8 @@ struct clientNode {
 };
 
 typedef struct clientNode ClientNode;
+
+
 
 /**
  * @brief CommMsg CtrlMsg FileMsg
@@ -49,4 +53,11 @@ const QString UDPPORT = "udpPort";
 const QString FILEPORT = "filePort";
 const QString FRIEND = "friend";
 
+
+
+/**
+ * @brief 约定好的命名
+ * Client 客户机
+ * Server 服务器
+ */
 #endif // UNIFORMLABEL_H
