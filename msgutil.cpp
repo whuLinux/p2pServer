@@ -54,6 +54,20 @@ CtrlMsg MsgUtil::createReturnAllPartners(QVector<ClientNode> & clients)
     return returnMsg;
 }
 
+CtrlMsg MsgUtil::createObtainSuccessMsg()
+{
+    CtrlMsg successMsg(UDPCtrlMsgType::OBTAINSUCCESS);
+
+    return successMsg;
+}
+
+CtrlMsg MsgUtil::createObtainFailureMsg()
+{
+    CtrlMsg failureMsg(UDPCtrlMsgType::OBTAINFAILURE);
+
+    return failureMsg;
+}
+
 CtrlMsg MsgUtil::createP2PHolePackage(ClientNode & client)
 {
     CtrlMsg holeMsg(UDPCtrlMsgType::P2PNEEDHOLE);

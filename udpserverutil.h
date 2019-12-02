@@ -53,8 +53,10 @@ public:
     void loginFailure(QHostAddress ip, quint16 udpPort);
     void logoutSuccess(QHostAddress ip, quint16 udpPort);
     void logoutFailure(QHostAddress ip, quint16 udpPort);
+    void sendAllPartners(QHostAddress ip, quint16 udpPort, QString hostName);
+    void obtainSuccess(QHostAddress ip, quint16 udpPort);
+    void obtainFailure(QHostAddress ip, quint16 udpPort);
     void p2pNeedHole(QString name);
-    void sendAllPartners(QHostAddress ip, quint16 udpPort);
 
     /**
      * @brief 接收客户端消息
@@ -63,7 +65,7 @@ public:
     bool login(QHostAddress ip, quint16 udpPort, QJsonObject & jsonMsg);
     bool logout(QHostAddress ip, quint16 udpPort, QJsonObject & jsonMsg);
     bool p2pTrans(QJsonObject & jsonMsg);
-    bool wantAllPartners(QHostAddress ip, quint16 udpPort);
+    bool wantAllPartners(QHostAddress ip, quint16 udpPort, QJsonObject & jsonMsg);
 
 public slots:
     bool recfromClient();

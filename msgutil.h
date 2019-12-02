@@ -22,6 +22,8 @@ public:
     CtrlMsg createLogoutSuccessMsg();
     CtrlMsg createLogoutFailureMsg();
     CtrlMsg createReturnAllPartners(QVector<ClientNode> & clients);
+    CtrlMsg createObtainSuccessMsg();
+    CtrlMsg createObtainFailureMsg();
     CtrlMsg createP2PHolePackage(ClientNode & client);
 };
 
