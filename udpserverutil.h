@@ -56,7 +56,7 @@ public:
     void sendAllPartners(QHostAddress ip, quint16 udpPort, QString hostName);
     void obtainSuccess(QHostAddress ip, quint16 udpPort);
     void obtainFailure(QHostAddress ip, quint16 udpPort);
-    void p2pNeedHole(QString name);
+    void p2pNeedHole(QString hostName, QString partnerName);
 
     /**
      * @brief 接收客户端消息

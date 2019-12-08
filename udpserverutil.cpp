@@ -128,16 +128,17 @@ void UDPServerUtil::obtainFailure(QHostAddress ip, quint16 udpPort)
     this->server->writeDatagram(msg.toMsg(), ip, udpPort);
 }
 
-void UDPServerUtil::p2pNeedHole(QString name)
+void UDPServerUtil::p2pNeedHole(QString hostName, QString partnerName)
 {
     ClientNode client;
-    client.name = name;
-    client.ip = this->clientNodes[name].ip;
-    client.port = this->clientNodes[name].port;
-    client.filePort = this->clientNodes[name].filePort;
+    client.name = hostName;
+    client.ip = this->clientNodes[hostName].ip;
+    client.port = this->clientNodes[hostName].port;
+    client.filePort = this->clientNodes[hostName].filePort;
 
+    qDebug() << "UDPServerUtil::p2pNeedHole  print friend client info: " << "friendName" << client.name << "friendIP " << client.ip << endl;
     CtrlMsg msg = this->msgUtil->createP2PHolePackage(client);
-    this->server->writeDatagram(msg.toMsg(), QHostAddress(this->clientNodes[name].ip), this->clientNodes[name].udpPort);
+    this->server->writeDatagram(msg.toMsg(), QHostAddress(this->clientNodes[partnerName].ip), this->clientNodes[partnerName].udpPort);
 }
 
 bool UDPServerUtil::recfromClient()
@@ -252,12 +253,12 @@ bool UDPServerUtil::p2pTrans(QJsonObject & jsonMsg)
     }
 
     QString partnerName = jsonMsg.value(PARTNERNAME).toString();
-    if (this->clientNodes.contains(partnerName)) {
+    if (!this->clientNodes.contains(partnerName)) {
         qDebug() << "UDPServerUtil::p2pTrans " << "目标客户端尚未注册" << endl;
         return false;
     }
 
-    p2pNeedHole(partnerName);
+    p2pNeedHole(hostName, partnerName);
     return true;
 }
 
