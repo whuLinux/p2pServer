@@ -4,6 +4,12 @@
 #include <QString>
 
 /**
+ * @brief The uniformlable classes
+ * @author 余宗宪
+ * P2P通信所使用到的一些枚举类型和常量
+ */
+
+/**
  * @brief The UDPCtrlMsgType enum
  * LOGIN                客户端信息注册到服务器
  * LOGOUT               服务器上客户端信息清空

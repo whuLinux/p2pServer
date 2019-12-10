@@ -2,6 +2,12 @@
 
 #include "server.h"
 
+/**
+ * @brief main.cpp
+ * @author 余宗宪
+ * 程序入口
+ */
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);

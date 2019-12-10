@@ -1,5 +1,11 @@
 #include "server.h"
 
+/**
+ * @brief The Server class
+ * @author 余宗宪
+ * P2P通信模块的服务器
+ */
+
 Server::Server()
 {
     this->port = 8808;

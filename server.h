@@ -4,6 +4,11 @@
 #include <QObject>
 #include "udpserverutil.h"
 
+/**
+ * @brief The Server class
+ * @author 余宗宪
+ * P2P通信模块的服务器
+ */
 class Server : QObject
 {
     Q_OBJECT

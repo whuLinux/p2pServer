@@ -11,6 +11,11 @@
 #include "msgutil.h"
 #include "uniformlabel.h"
 
+/**
+ * @brief The UDPSocketUtil class
+ * @author 余宗宪
+ * 服务器和客户端UDP通信工具类
+ */
 class UDPServerUtil : public QObject
 {
     Q_OBJECT
